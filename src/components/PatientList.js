@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { getpatient,addpatient } from './services/ApiService';
+import { getpatient,addpatient,editpatient,deletepatient} from './services/ApiService';
 import AddPatient from './AddPatient';
+import EditPatient from './EditPatient';
 
 const PatientList = () => {
     const [patients, setPatients] = useState([])
-    const [showAddPatientForm,setShowAddPatientForm]=useState(false)
+    const [showAddPatientForm, setShowAddPatientForm] = useState(false)
+    const [showEditPatientForm, setShowEditPatientForm] = useState(false)
+    const [selectedEditData,setSelectedEditData]=useState()
     useEffect(() => {
         let mount = true
         getpatient()
@@ -20,6 +23,25 @@ const PatientList = () => {
         .then(res => {
             setPatients(res)
             console.log(res)
+        })
+    }
+    const handleEditBtn = (patient)=>{
+        setSelectedEditData(patient)
+        console.log("patient",patient)
+        setShowEditPatientForm(true)
+        setShowAddPatientForm(false)
+    }
+
+    const handleEditSubmit = (e, id) => {
+        editpatient(id,e.target)
+            .then(res => {
+            setPatients(res)
+        })
+    }
+    const handleDeleteBtn = (id) => {
+        deletepatient(id)
+        .then(res => {
+            setPatients(patients.filter(p=>p.patient_id !==id))
         })
     }
     return (
@@ -41,7 +63,7 @@ const PatientList = () => {
                         <td>{patient.first_name }</td>
                         <td>{patient.last_name }</td>
                         <td>{patient.blood }</td>
-                        <td><button>Edit</button> <button>Delete</button></td>
+                        <td><button onClick={()=>handleEditBtn(patient)}>Edit</button> <button onClick={()=>handleDeleteBtn(patient.patient_id)}>Delete</button></td>
                     </tr>
                     })}
                     
@@ -49,6 +71,7 @@ const PatientList = () => {
             </table>
              <button onClick={()=>setShowAddPatientForm(true)}>Add New patient</button>
              {showAddPatientForm && <AddPatient handleAddSubmit={handleAddSubmit}></AddPatient>}
+             {showEditPatientForm && <EditPatient handleEditSubmit={handleEditSubmit} selectedEditData={selectedEditData}></EditPatient>}
         </>
     );
 };
