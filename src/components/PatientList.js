@@ -44,6 +44,9 @@ const PatientList = () => {
             setPatients(patients.filter(p=>p.patient_id !==id))
         })
     }
+    const handleCancelBtn=()=>{
+        setShowAddPatientForm(false)
+    }
     return (
         <>
             
@@ -70,7 +73,7 @@ const PatientList = () => {
                 </tbody>
             </table>
              <button onClick={()=>setShowAddPatientForm(true)}>Add New patient</button>
-             {showAddPatientForm && <AddPatient handleAddSubmit={handleAddSubmit}></AddPatient>}
+             {showAddPatientForm && <AddPatient handleAddSubmit={handleAddSubmit} handleCancelBtn={handleCancelBtn}></AddPatient>}
              {showEditPatientForm && <EditPatient handleEditSubmit={handleEditSubmit} selectedEditData={selectedEditData}></EditPatient>}
         </>
     );

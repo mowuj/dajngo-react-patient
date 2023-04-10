@@ -9,6 +9,7 @@ const AddPatient = (props) => {
                 Last name <input type='text' name='last_name' />
                 Blood Group <input type='text' name='blood' />
                 <button type='submit'>Add</button>
+                <button onClick={props.handleCancelBtn}>Cancel</button>
             </form>
         </>
     );
