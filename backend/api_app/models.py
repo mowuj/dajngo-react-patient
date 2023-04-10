@@ -7,5 +7,5 @@ class Patient(models.Model):
     last_name=models.CharField(max_length=50)
     blood=models.CharField(max_length=50)
 
-    def __str(self):
-        return self.first_name
+    def __str__(self):
+        return str(self.first_name)
